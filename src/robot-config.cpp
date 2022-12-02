@@ -14,17 +14,16 @@ motor_group LeftDriveSmart = motor_group(leftMotorA, leftMotorB);
 motor rightMotorA = motor(PORT3, ratio18_1, true);
 motor rightMotorB = motor(PORT4, ratio18_1, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
-drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 299.24, 381, 177.79999999999998, mm, 1);
+inertial DrivetrainInertial = inertial(PORT5);
+smartdrive Drivetrain = smartdrive(LeftDriveSmart, RightDriveSmart, DrivetrainInertial, 319.19, 320, 40, mm, 1);
 controller Controller1 = controller(primary);
-motor Flywheel = motor(PORT5, ratio6_1, false);
-motor Intake = motor(PORT6, ratio6_1, false);
+motor Flywheel = motor(PORT6, ratio18_1, false);
+motor Intake = motor(PORT7, ratio18_1, false);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable
 bool RemoteControlCodeEnabled = true;
 // define variables used for controlling motors based on controller inputs
-bool Controller1LeftShoulderControlMotorsStopped = true;
-bool Controller1RightShoulderControlMotorsStopped = true;
 bool DrivetrainLNeedsToBeStopped_Controller1 = true;
 bool DrivetrainRNeedsToBeStopped_Controller1 = true;
 
@@ -77,30 +76,6 @@ int rc_auto_loop_function_Controller1() {
         RightDriveSmart.setVelocity(drivetrainRightSideSpeed, percent);
         RightDriveSmart.spin(forward);
       }
-      // check the ButtonL1/ButtonL2 status to control Flywheel
-      if (Controller1.ButtonL1.pressing()) {
-        Flywheel.spin(forward);
-        Controller1LeftShoulderControlMotorsStopped = false;
-      } else if (Controller1.ButtonL2.pressing()) {
-        Flywheel.spin(reverse);
-        Controller1LeftShoulderControlMotorsStopped = false;
-      } else if (!Controller1LeftShoulderControlMotorsStopped) {
-        Flywheel.stop();
-        // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
-        Controller1LeftShoulderControlMotorsStopped = true;
-      }
-      // check the ButtonR1/ButtonR2 status to control Intake
-      if (Controller1.ButtonR1.pressing()) {
-        Intake.spin(forward);
-        Controller1RightShoulderControlMotorsStopped = false;
-      } else if (Controller1.ButtonR2.pressing()) {
-        Intake.spin(reverse);
-        Controller1RightShoulderControlMotorsStopped = false;
-      } else if (!Controller1RightShoulderControlMotorsStopped) {
-        Intake.stop();
-        // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
-        Controller1RightShoulderControlMotorsStopped = true;
-      }
     }
     // wait before repeating the process
     wait(20, msec);
@@ -114,5 +89,20 @@ int rc_auto_loop_function_Controller1() {
  * This should be called at the start of your int main function.
  */
 void vexcodeInit( void ) {
+  Brain.Screen.print("Device initialization...");
+  Brain.Screen.setCursor(2, 1);
+  // calibrate the drivetrain Inertial
+  wait(200, msec);
+  DrivetrainInertial.calibrate();
+  Brain.Screen.print("Calibrating Inertial for Drivetrain");
+  // wait for the Inertial calibration process to finish
+  while (DrivetrainInertial.isCalibrating()) {
+    wait(25, msec);
+  }
+  // reset the screen now that the calibration is complete
+  Brain.Screen.clearScreen();
+  Brain.Screen.setCursor(1,1);
   task rc_auto_loop_task_Controller1(rc_auto_loop_function_Controller1);
+  wait(50, msec);
+  Brain.Screen.clearScreen();
 }
