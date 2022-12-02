@@ -43,6 +43,9 @@ void pre_auton(void) {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
   Inertial5.calibrate();
+
+  Drivetrain.setDriveVelocity(100, percent);
+  Drivetrain.setTurnVelocity(100, percent);
 }
 
 /*---------------------------------------------------------------------------*/
