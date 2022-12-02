@@ -10,10 +10,11 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 2, 3, 4, 5   
+// Drivetrain           drivetrain    1, 2, 3, 4      
 // Controller1          controller                    
 // Flywheel             motor         6               
 // Intake               motor         7               
+// Inertial5            inertial      5               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
@@ -41,6 +42,7 @@ void pre_auton(void) {
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
+  Inertial5.calibrate();
 }
 
 /*---------------------------------------------------------------------------*/
