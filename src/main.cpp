@@ -46,6 +46,10 @@ void pre_auton(void) {
 
   Drivetrain.setDriveVelocity(100, percent);
   Drivetrain.setTurnVelocity(100, percent);
+
+  Flywheel.setVelocity(100, percent);
+
+  Intake.setVelocity(100, percent);
 }
 
 /*---------------------------------------------------------------------------*/
