@@ -16,6 +16,15 @@
 // Intake               motor         7               
 // Inertial5            inertial      5               
 // ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Drivetrain           drivetrain    1, 2, 3, 4      
+// Controller1          controller                    
+// Flywheel             motor         6               
+// Intake               motor         7               
+// Inertial5            inertial      5               
+// ---- END VEXCODE CONFIGURED DEVICES ----
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */

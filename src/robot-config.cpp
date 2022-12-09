@@ -16,7 +16,7 @@ motor rightMotorB = motor(PORT4, ratio18_1, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 406.4, 342.9, mm, 1);
 controller Controller1 = controller(primary);
-motor Flywheel = motor(PORT6, ratio18_1, false);
+motor Flywheel = motor(PORT6, ratio6_1, false);
 motor Intake = motor(PORT7, ratio18_1, false);
 inertial Inertial5 = inertial(PORT5);
 
