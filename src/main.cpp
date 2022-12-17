@@ -103,7 +103,7 @@ void usercontrol(void) {
 
     if(Controller1.ButtonR2.pressing()) {
       Flywheel.spin(forward);
-    } else if (Controller1.ButtonX.pressing()) {
+    } else if(Controller1.ButtonX.pressing()) {
       Flywheel.spin(reverse);
     } else {
       Flywheel.stop();
@@ -111,7 +111,7 @@ void usercontrol(void) {
 
     if(Controller1.ButtonR1.pressing()) {
       DiskPusher.spin(forward);
-    } else if (Controller1.ButtonB.pressing()) {
+    } else if(Controller1.ButtonB.pressing()) {
       DiskPusher.spin(reverse);
     } else {
       DiskPusher.stop();
