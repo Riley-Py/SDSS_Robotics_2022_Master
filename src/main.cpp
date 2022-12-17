@@ -12,10 +12,10 @@
 // [Name]               [Type]        [Port(s)]
 // Drivetrain           drivetrain    1, 2, 3, 4      
 // Controller1          controller                    
-// Flywheel             motor         6               
-// Intake               motor         7               
-// DiskPusher           motor         8               
-// Roller               motor         9               
+// Flywheel             motor         5               
+// Intake               motor         6               
+// DiskPusher           motor         7               
+// Roller               motor         8               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"

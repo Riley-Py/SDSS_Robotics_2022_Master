@@ -16,10 +16,10 @@ motor rightMotorB = motor(PORT4, ratio18_1, true);
 motor_group RightDriveSmart = motor_group(rightMotorA, rightMotorB);
 drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 406.4, 342.9, mm, 1);
 controller Controller1 = controller(primary);
-motor Flywheel = motor(PORT6, ratio6_1, false);
-motor Intake = motor(PORT7, ratio18_1, false);
-motor DiskPusher = motor(PORT8, ratio18_1, true);
-motor Roller = motor(PORT9, ratio36_1, false);
+motor Flywheel = motor(PORT5, ratio6_1, false);
+motor Intake = motor(PORT6, ratio18_1, false);
+motor DiskPusher = motor(PORT7, ratio18_1, true);
+motor Roller = motor(PORT8, ratio36_1, false);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable
