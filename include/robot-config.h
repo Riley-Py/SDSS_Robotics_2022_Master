@@ -8,7 +8,6 @@ extern controller Controller1;
 extern motor Flywheel;
 extern motor Intake;
 extern motor DiskPusher;
-extern inertial Inertial5;
 extern motor Roller;
 
 /**

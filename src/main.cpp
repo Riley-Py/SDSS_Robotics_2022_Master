@@ -15,7 +15,6 @@
 // Flywheel             motor         6               
 // Intake               motor         7               
 // DiskPusher           motor         8               
-// Inertial5            inertial      5               
 // Roller               motor         9               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
@@ -49,7 +48,6 @@ void pre_auton(void) {
 
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
-  Inertial5.calibrate();
 
   Drivetrain.setDriveVelocity(100, percent);
   Drivetrain.setTurnVelocity(100, percent);
