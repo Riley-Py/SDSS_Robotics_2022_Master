@@ -93,6 +93,30 @@ void usercontrol(void) {
     // update your motors, etc.
     // ........................................................................
 
+    if(Controller1.ButtonR2.pressing()) {
+      Flywheel.spin(forward);
+    }
+
+    if(Controller1.ButtonR1.pressing()) {
+      DiskPusher.spin(forward);
+    }
+
+    if(Controller1.ButtonUp.pressing()) {
+      Flywheel.spin(reverse);
+    }
+
+    if(Controller1.ButtonDown.pressing()) {
+      DiskPusher.spin(reverse);
+    }
+
+    if(!Controller1.ButtonR2.pressing() && !Controller1.ButtonUp.pressing()) {
+      Flywheel.stop();
+    }
+
+    if(!Controller1.ButtonR1.pressing() && !Controller1.ButtonDown.pressing()) {
+      DiskPusher.stop();
+    }
+
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
   }

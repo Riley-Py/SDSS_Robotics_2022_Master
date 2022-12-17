@@ -26,7 +26,6 @@ inertial Inertial5 = inertial(PORT5);
 bool RemoteControlCodeEnabled = true;
 // define variables used for controlling motors based on controller inputs
 bool Controller1LeftShoulderControlMotorsStopped = true;
-bool Controller1RightShoulderControlMotorsStopped = true;
 bool DrivetrainNeedsToBeStopped_Controller1 = true;
 
 // define a task that will handle monitoring inputs from Controller1
@@ -66,29 +65,17 @@ int rc_auto_loop_function_Controller1() {
         RightDriveSmart.setVelocity(drivetrainRightSideSpeed, percent);
         RightDriveSmart.spin(forward);
       }
-      // check the ButtonL1/ButtonL2 status to control Flywheel
+      // check the ButtonL1/ButtonL2 status to control Intake
       if (Controller1.ButtonL1.pressing()) {
-        Flywheel.spin(forward);
+        Intake.spin(forward);
         Controller1LeftShoulderControlMotorsStopped = false;
       } else if (Controller1.ButtonL2.pressing()) {
-        Flywheel.spin(reverse);
+        Intake.spin(reverse);
         Controller1LeftShoulderControlMotorsStopped = false;
       } else if (!Controller1LeftShoulderControlMotorsStopped) {
-        Flywheel.stop();
-        // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
-        Controller1LeftShoulderControlMotorsStopped = true;
-      }
-      // check the ButtonR1/ButtonR2 status to control Intake
-      if (Controller1.ButtonR1.pressing()) {
-        Intake.spin(forward);
-        Controller1RightShoulderControlMotorsStopped = false;
-      } else if (Controller1.ButtonR2.pressing()) {
-        Intake.spin(reverse);
-        Controller1RightShoulderControlMotorsStopped = false;
-      } else if (!Controller1RightShoulderControlMotorsStopped) {
         Intake.stop();
         // set the toggle so that we don't constantly tell the motor to stop when the buttons are released
-        Controller1RightShoulderControlMotorsStopped = true;
+        Controller1LeftShoulderControlMotorsStopped = true;
       }
     }
     // wait before repeating the process
