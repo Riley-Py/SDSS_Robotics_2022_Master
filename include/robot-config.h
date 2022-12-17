@@ -9,6 +9,7 @@ extern motor Flywheel;
 extern motor Intake;
 extern motor DiskPusher;
 extern inertial Inertial5;
+extern motor Roller;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.

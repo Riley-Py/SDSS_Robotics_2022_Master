@@ -16,11 +16,17 @@
 // Intake               motor         7               
 // DiskPusher           motor         8               
 // Inertial5            inertial      5               
+// Roller               motor         9               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
 
 using namespace vex;
+
+void spinRoller() {
+  Roller.setVelocity(Controller1.Axis2.position(percent), percent);
+  Roller.spin(forward);
+}
 
 // A global instance of competition
 competition Competition;
@@ -53,6 +59,8 @@ void pre_auton(void) {
   Intake.setVelocity(100, percent);
 
   DiskPusher.setVelocity(100, percent);
+
+  Roller.setVelocity(100, percent);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -95,27 +103,21 @@ void usercontrol(void) {
 
     if(Controller1.ButtonR2.pressing()) {
       Flywheel.spin(forward);
+    } else if (Controller1.ButtonX.pressing()) {
+      Flywheel.spin(reverse);
+    } else {
+      Flywheel.stop();
     }
 
     if(Controller1.ButtonR1.pressing()) {
       DiskPusher.spin(forward);
-    }
-
-    if(Controller1.ButtonX.pressing()) {
-      Flywheel.spin(reverse);
-    }
-
-    if(Controller1.ButtonB.pressing()) {
+    } else if (Controller1.ButtonB.pressing()) {
       DiskPusher.spin(reverse);
-    }
-
-    if(!Controller1.ButtonR2.pressing() && !Controller1.ButtonX.pressing()) {
-      Flywheel.stop();
-    }
-
-    if(!Controller1.ButtonR1.pressing() && !Controller1.ButtonB.pressing()) {
+    } else {
       DiskPusher.stop();
     }
+
+    Controller1.Axis2.changed(spinRoller);
 
     wait(20, msec); // Sleep the task for a short amount of time to
                     // prevent wasted resources.
