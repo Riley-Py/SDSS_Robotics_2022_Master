@@ -101,19 +101,19 @@ void usercontrol(void) {
       DiskPusher.spin(forward);
     }
 
-    if(Controller1.ButtonUp.pressing()) {
+    if(Controller1.ButtonX.pressing()) {
       Flywheel.spin(reverse);
     }
 
-    if(Controller1.ButtonDown.pressing()) {
+    if(Controller1.ButtonB.pressing()) {
       DiskPusher.spin(reverse);
     }
 
-    if(!Controller1.ButtonR2.pressing() && !Controller1.ButtonUp.pressing()) {
+    if(!Controller1.ButtonR2.pressing() && !Controller1.ButtonX.pressing()) {
       Flywheel.stop();
     }
 
-    if(!Controller1.ButtonR1.pressing() && !Controller1.ButtonDown.pressing()) {
+    if(!Controller1.ButtonR1.pressing() && !Controller1.ButtonB.pressing()) {
       DiskPusher.stop();
     }
 
