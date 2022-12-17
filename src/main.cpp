@@ -14,6 +14,7 @@
 // Controller1          controller                    
 // Flywheel             motor         6               
 // Intake               motor         7               
+// DiskPusher           motor         8               
 // Inertial5            inertial      5               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
@@ -50,6 +51,8 @@ void pre_auton(void) {
   Flywheel.setVelocity(100, percent);
 
   Intake.setVelocity(100, percent);
+
+  DiskPusher.setVelocity(100, percent);
 }
 
 /*---------------------------------------------------------------------------*/

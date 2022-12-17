@@ -18,6 +18,7 @@ drivetrain Drivetrain = drivetrain(LeftDriveSmart, RightDriveSmart, 319.19, 406.
 controller Controller1 = controller(primary);
 motor Flywheel = motor(PORT6, ratio6_1, false);
 motor Intake = motor(PORT7, ratio18_1, false);
+motor DiskPusher = motor(PORT8, ratio18_1, true);
 inertial Inertial5 = inertial(PORT5);
 
 // VEXcode generated functions
