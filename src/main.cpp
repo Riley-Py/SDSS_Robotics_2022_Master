@@ -1,3 +1,13 @@
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Drivetrain           drivetrain    1, 2, 3, 4, 9   
+// Controller1          controller                    
+// Flywheel             motor         5               
+// Intake               motor         6               
+// DiskPusher           motor         7               
+// Roller               motor         8               
+// ---- END VEXCODE CONFIGURED DEVICES ----
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
@@ -59,6 +69,11 @@ void pre_auton(void) {
   DiskPusher.setVelocity(100, percent);
 
   Roller.setVelocity(100, percent);
+
+  //Sets the degrees to start to 0 (where the inertial is positioned with respect to the x-axis)
+  Drivetrain.setHeading(0, degrees);
+
+  
 }
 
 /*---------------------------------------------------------------------------*/
@@ -75,6 +90,14 @@ void autonomous(void) {
   // ..........................................................................
   // Insert autonomous user code here.
   // ..........................................................................
+
+  //Need colour sensor to code the rollers here 
+
+  /*As well, we need to make a decision on the vision sensor
+  as that will dictate whether we use it to pick up disks or 
+  doing it manually ourselves*/
+
+  //Delete these comments when we no longer need them
 }
 
 /*---------------------------------------------------------------------------*/
@@ -99,6 +122,7 @@ void usercontrol(void) {
     // update your motors, etc.
     // ........................................................................
 
+    //Flywheel controls
     if(Controller1.ButtonR2.pressing()) {
       Flywheel.spin(forward);
     } else if(Controller1.ButtonX.pressing()) {
@@ -107,6 +131,7 @@ void usercontrol(void) {
       Flywheel.stop();
     }
 
+    //Pusher into the flywheel
     if(Controller1.ButtonR1.pressing()) {
       DiskPusher.spin(forward);
     } else if(Controller1.ButtonB.pressing()) {
