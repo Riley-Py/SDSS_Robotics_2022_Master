@@ -1,13 +1,3 @@
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 2, 3, 4, 9   
-// Controller1          controller                    
-// Flywheel             motor         5               
-// Intake               motor         6               
-// DiskPusher           motor         7               
-// Roller               motor         8               
-// ---- END VEXCODE CONFIGURED DEVICES ----
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
@@ -20,7 +10,7 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 2, 3, 4      
+// Drivetrain           drivetrain    1, 2, 3, 4, 9   
 // Controller1          controller                    
 // Flywheel             motor         5               
 // Intake               motor         6               
