@@ -63,7 +63,6 @@ void pre_auton(void) {
   //Sets the degrees to start to 0 (where the inertial is positioned with respect to the x-axis)
   Drivetrain.setHeading(0, degrees);
 
-  
 }
 
 /*---------------------------------------------------------------------------*/
