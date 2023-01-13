@@ -114,7 +114,7 @@ void usercontrol(void) {
     //Flywheel controls
     if(Controller1.ButtonR2.pressing()) {
       Flywheel.spin(forward);
-    } else if(Controller1.ButtonX.pressing()) {
+    } else if(Controller1.ButtonY.pressing()) {
       Flywheel.spin(reverse);
     } else {
       Flywheel.stop();
