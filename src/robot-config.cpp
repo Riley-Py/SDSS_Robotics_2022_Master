@@ -21,6 +21,7 @@ motor Flywheel = motor(PORT5, ratio6_1, false);
 motor Intake = motor(PORT6, ratio18_1, false);
 motor DiskPusher = motor(PORT7, ratio18_1, true);
 motor Roller = motor(PORT8, ratio36_1, false);
+digital_out Pneumatic = digital_out(Brain.ThreeWirePort.A);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable

@@ -16,6 +16,7 @@
 // Intake               motor         6               
 // DiskPusher           motor         7               
 // Roller               motor         8               
+// Pneumatic            digital_out   A               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
 #include "vex.h"
