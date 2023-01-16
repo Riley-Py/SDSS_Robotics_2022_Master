@@ -102,6 +102,9 @@ void autonomous(void) {
 
 void usercontrol(void) {
   // User control code here, inside the loop
+  bool flywheelStopped{ true };
+  bool diskPusherStopped{ true };
+
   while(1) {
     // This is the main execution loop for the user control program.
     // Each time through the loop your program should update motor + servo
@@ -115,19 +118,25 @@ void usercontrol(void) {
     //Flywheel controls
     if(Controller1.ButtonR2.pressing()) {
       Flywheel.spin(forward);
+      flywheelStopped = false;
     } else if(Controller1.ButtonY.pressing()) {
       Flywheel.spin(reverse);
-    } else {
+      flywheelStopped = false;
+    } else if(!flywheelStopped) {
       Flywheel.stop();
+      flywheelStopped = true;
     }
 
     //Pusher into the flywheel
     if(Controller1.ButtonR1.pressing()) {
       DiskPusher.spin(forward);
+      diskPusherStopped = false
     } else if(Controller1.ButtonB.pressing()) {
       DiskPusher.spin(reverse);
-    } else {
+      diskPusherStopped = false;
+    } else if(!diskPusherStopped){
       DiskPusher.stop();
+      diskPusherStopped = true;
     }
 
     Controller1.Axis2.changed(spinRoller);
