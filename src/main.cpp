@@ -130,7 +130,7 @@ void usercontrol(void) {
     //Pusher into the flywheel
     if(Controller1.ButtonR1.pressing()) {
       DiskPusher.spin(forward);
-      diskPusherStopped = false
+      diskPusherStopped = false;
     } else if(Controller1.ButtonB.pressing()) {
       DiskPusher.spin(reverse);
       diskPusherStopped = false;
