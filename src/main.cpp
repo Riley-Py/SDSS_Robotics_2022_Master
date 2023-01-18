@@ -1,3 +1,58 @@
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Drivetrain           drivetrain    11, 12, 13, 14, 1
+// Controller1          controller                    
+// Flywheel             motor         16              
+// Intake               motor         18              
+// DiskPusher           motor         17              
+// Roller               motor         19              
+// Pneumatic            digital_out   A               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Drivetrain           drivetrain    11, 12, 13, 14, 1
+// Controller1          controller                    
+// Flywheel             motor         16              
+// Intake               motor         18              
+// DiskPusher           motor         17              
+// Roller               motor         8               
+// Pneumatic            digital_out   A               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Drivetrain           drivetrain    11, 12, 13, 14, 1
+// Controller1          controller                    
+// Flywheel             motor         16              
+// Intake               motor         6               
+// DiskPusher           motor         17              
+// Roller               motor         8               
+// Pneumatic            digital_out   A               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Drivetrain           drivetrain    11, 12, 13, 14, 1
+// Controller1          controller                    
+// Flywheel             motor         16              
+// Intake               motor         6               
+// DiskPusher           motor         7               
+// Roller               motor         8               
+// Pneumatic            digital_out   A               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Drivetrain           drivetrain    11, 12, 13, 14, 1
+// Controller1          controller                    
+// Flywheel             motor         5               
+// Intake               motor         6               
+// DiskPusher           motor         7               
+// Roller               motor         8               
+// Pneumatic            digital_out   A               
+// ---- END VEXCODE CONFIGURED DEVICES ----
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
@@ -23,7 +78,11 @@
 
 using namespace vex;
 
+//Deadband for joysticks
+const int deadband = 10;
+
 void spinRoller() {
+
   Roller.setVelocity(Controller1.Axis2.position(percent), percent);
   Roller.spin(forward);
 }
@@ -32,6 +91,7 @@ void spinRoller() {
 competition Competition;
 
 // define your global instances of motors and other devices here
+
 
 /*---------------------------------------------------------------------------*/
 /*                          Pre-Autonomous Functions                         */
@@ -55,7 +115,7 @@ void pre_auton(void) {
 
   Flywheel.setVelocity(100, percent);
 
-  Intake.setVelocity(100, percent);
+  Intake.setVelocity(80, percent);
 
   DiskPusher.setVelocity(75, percent);
 
@@ -113,9 +173,9 @@ void usercontrol(void) {
     // ........................................................................
     // Insert user code here. This is where you use the joystick values to
     // update your motors, etc.
-    // ........................................................................
-
+    // ........................................................................ 
     //Flywheel controls
+
     if(Controller1.ButtonR2.pressing()) {
       Flywheel.spin(forward);
       flywheelStopped = false;
@@ -138,8 +198,13 @@ void usercontrol(void) {
       DiskPusher.stop();
       diskPusherStopped = true;
     }
+    
+    //Roller deadband
+    if (abs(Controller1.Axis2.position()) > deadband){
+          Controller1.Axis2.changed(spinRoller);
+    }
 
-    Controller1.Axis2.changed(spinRoller);
+
 
     if(Controller1.ButtonX.pressing()) {
       Pneumatic.set(true);
