@@ -57,7 +57,7 @@ void pre_auton(void) {
 
   Intake.setVelocity(100, percent);
 
-  DiskPusher.setVelocity(100, percent);
+  DiskPusher.setVelocity(75, percent);
 
   Roller.setVelocity(100, percent);
 
