@@ -1,168 +1,179 @@
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*    Module:       main.cpp                                                  */
-/*    Author:       VEX                                                       */
-/*    Created:      Thu Sep 26 2019                                           */
-/*    Description:  Competition Template                                      */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
+#include "main.h"
 
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 2, 3, 4, 9   
-// Controller1          controller                    
-// Flywheel             motor         5               
-// Intake               motor         6               
-// DiskPusher           motor         7               
-// Roller               motor         8               
-// Pneumatic            digital_out   A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
+pros::MotorGroup leftWheels({11, 12});
+pros::Motor rightFrontWheel(13, true);
+pros::Motor rightBackWheel(14, true);
+pros::MotorGroup rightWheels({rightFrontWheel, rightBackWheel});
+pros::Motor flywheel(16, MOTOR_GEAR_BLUE);
+pros::Motor intake(18);
+pros::Motor diskPusher(17, true);
+pros::Motor roller(19, MOTOR_GEAR_RED);
+pros::Imu inertial(1);
+pros::ADIDigitalOut pneumatic('A');
 
-#include "vex.h"
+bool auton1{ false };
+bool auton2{ false };
+bool auton3{ false };
 
-using namespace vex;
-
-void spinRoller() {
-  Roller.setVelocity(Controller1.Axis2.position(percent), percent);
-  Roller.spin(forward);
+/**
+ * Runs initialization code. This occurs as soon as the program is started.
+ *
+ * All other competition modes are blocked by initialize; it is recommended
+ * to keep execution time for this mode under a few seconds.
+ */
+void initialize() {
+	competition_initialize();
+	autonomous();
+	inertial.reset();
+	inertial.set_heading(0);
 }
 
-// A global instance of competition
-competition Competition;
+/**
+ * Runs while the robot is in the disabled state of Field Management System or
+ * the VEX Competition Switch, following either autonomous or opcontrol. When
+ * the robot is enabled, this task will exit.
+ */
+void disabled() {}
 
-// define your global instances of motors and other devices here
+/**
+ * Runs after initialize(), and before autonomous when connected to the Field
+ * Management System or the VEX Competition Switch. This is intended for
+ * competition-specific initialization routines, such as an autonomous selector
+ * on the LCD.
+ *
+ * This task will exit when the robot is enabled and autonomous or opcontrol
+ * starts.
+ */
+void competition_initialize() {
+	pros::lcd::initialize();
+	pros::lcd::set_text(1, "Auton 1");
+	pros::lcd::set_text(2, "Auton 2");
+	pros::lcd::set_text(3, "Auton 3");
 
-/*---------------------------------------------------------------------------*/
-/*                          Pre-Autonomous Functions                         */
-/*                                                                           */
-/*  You may want to perform some actions before the competition starts.      */
-/*  Do them in the following function.  You must return from this function   */
-/*  or the autonomous and usercontrol tasks will not be started.  This       */
-/*  function is only called once after the V5 has been powered on and        */
-/*  not every time that the robot is disabled.                               */
-/*---------------------------------------------------------------------------*/
-
-void pre_auton(void) {
-  // Initializing Robot Configuration. DO NOT REMOVE!
-  vexcodeInit();
-
-  // All activities that occur before the competition starts
-  // Example: clearing encoders, setting servo positions, ...
-
-  Drivetrain.setDriveVelocity(100, percent);
-  Drivetrain.setTurnVelocity(100, percent);
-
-  Flywheel.setVelocity(100, percent);
-
-  Intake.setVelocity(100, percent);
-
-  DiskPusher.setVelocity(75, percent);
-
-  Roller.setVelocity(100, percent);
-
-  //Sets the degrees to start to 0 (where the inertial is positioned with respect to the x-axis)
-  Drivetrain.setHeading(0, degrees);
-
+	if(pros::lcd::read_buttons() == 1) {
+		auton1 = true;
+	}  else if(pros::lcd::read_buttons() == 4) {
+		auton2 = true;
+	} else if(pros::lcd::read_buttons() == 8) {
+		auton3 = true;
+	}
 }
 
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                              Autonomous Task                              */
-/*                                                                           */
-/*  This task is used to control your robot during the autonomous phase of   */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
-/*---------------------------------------------------------------------------*/
-
-void autonomous(void) {
-  // ..........................................................................
-  // Insert autonomous user code here.
-  // ..........................................................................
-
-  //Need colour sensor to code the rollers here 
-
-  /*As well, we need to make a decision on the vision sensor
-  as that will dictate whether we use it to pick up disks or 
-  doing it manually ourselves*/
-
-  //Delete these comments when we no longer need them
+/**
+ * Runs the user autonomous code. This function will be started in its own task
+ * with the default priority and stack size whenever the robot is enabled via
+ * the Field Management System or the VEX Competition Switch in the autonomous
+ * mode. Alternatively, this function may be called in initialize or opcontrol
+ * for non-competition testing purposes.
+ *
+ * If the robot is disabled or communications is lost, the autonomous task
+ * will be stopped. Re-enabling the robot will restart the task, not re-start it
+ * from where it left off.
+ */
+void autonomous() {
+	if(auton1) {
+		pros::screen::print(TEXT_MEDIUM, 1, "auton1");
+	} else if(auton2) {
+		pros::screen::print(TEXT_MEDIUM, 1, "auton2");
+	} else if(auton3) {
+		pros::screen::print(TEXT_MEDIUM, 1, "auton3");
+	}
 }
 
-/*---------------------------------------------------------------------------*/
-/*                                                                           */
-/*                              User Control Task                            */
-/*                                                                           */
-/*  This task is used to control your robot during the user control phase of */
-/*  a VEX Competition.                                                       */
-/*                                                                           */
-/*  You must modify the code to add your own robot specific commands here.   */
-/*---------------------------------------------------------------------------*/
+/**
+ * Runs the operator control code. This function will be started in its own task
+ * with the default priority and stack size whenever the robot is enabled via
+ * the Field Management System or the VEX Competition Switch in the operator
+ * control mode.
+ *
+ * If no competition control is connected, this function will run immediately
+ * following initialize().
+ *
+ * If the robot is disabled or communications is lost, the
+ * operator control task will be stopped. Re-enabling the robot will restart the
+ * task, not resume it from where it left off.
+ */
+void opcontrol() {
+	bool drivetrainStopped{ true };
+	bool intakeStopped{ true };
+	bool diskPusherStopped{ true };
+	bool flywheelStopped{ true };
+	bool rollerStopped{ true };
 
-void usercontrol(void) {
-  // User control code here, inside the loop
-  bool flywheelStopped{ true };
-  bool diskPusherStopped{ true };
+	while(true) {
+		int leftWheelsSpeed{ controller.get_analog(ANALOG_LEFT_Y) + controller.get_analog(ANALOG_LEFT_X) };
+		int rightWheelsSpeed{ controller.get_analog(ANALOG_LEFT_Y) - controller.get_analog(ANALOG_LEFT_X) };
 
-  while(1) {
-    // This is the main execution loop for the user control program.
-    // Each time through the loop your program should update motor + servo
-    // values based on feedback from the joysticks.
+		if(abs(leftWheelsSpeed) < 5 && abs(rightWheelsSpeed) < 5) {
+			if(drivetrainStopped) {
+				leftWheels.brake();
+				rightWheels.brake();
+				drivetrainStopped = false;
+			}
+		} else {
+			drivetrainStopped = true;
+		}
 
-    // ........................................................................
-    // Insert user code here. This is where you use the joystick values to
-    // update your motors, etc.
-    // ........................................................................
+		if(drivetrainStopped) {
+			leftWheels = leftWheelsSpeed;
+			rightWheels = rightWheelsSpeed;
+		}
 
-    //Flywheel controls
-    if(Controller1.ButtonR2.pressing()) {
-      Flywheel.spin(forward);
-      flywheelStopped = false;
-    } else if(Controller1.ButtonY.pressing()) {
-      Flywheel.spin(reverse);
-      flywheelStopped = false;
-    } else if(!flywheelStopped) {
-      Flywheel.stop();
-      flywheelStopped = true;
-    }
+		if(controller.get_digital(DIGITAL_L1)) {
+			intake = 127;
+			intakeStopped = false;
+		} else if(controller.get_digital(DIGITAL_L2)) {
+			intake = -127;
+			intakeStopped = false;
+		} else if(!intakeStopped) {
+			intake.brake();
+			intakeStopped = true;
+		}
 
-    //Pusher into the flywheel
-    if(Controller1.ButtonR1.pressing()) {
-      DiskPusher.spin(forward);
-      diskPusherStopped = false;            
-    } else if(Controller1.ButtonB.pressing()) {
-      DiskPusher.spin(reverse);
-      diskPusherStopped = false;
-    } else if(!diskPusherStopped){
-      DiskPusher.stop();
-      diskPusherStopped = true;
-    }
+		if(controller.get_digital(DIGITAL_R2)) {
+			flywheel = 127;
+			flywheelStopped = false;
+		} else if(controller.get_digital(DIGITAL_Y)) {
+			flywheel = -127;
+			flywheelStopped = false;
+		} else if(!flywheelStopped) {
+			flywheel.brake();
+			flywheelStopped = true;
+		}
 
-    Controller1.Axis2.changed(spinRoller);
+		if(controller.get_digital(DIGITAL_R1)) {
+			diskPusher = 95;
+			diskPusherStopped = false;
+		} else if(controller.get_digital(DIGITAL_B)) {
+			diskPusher = -95;
+			diskPusherStopped = false;
+		} else if(!diskPusherStopped) {
+			diskPusher.brake();
+			diskPusherStopped = true;
+		}
 
-    if(Controller1.ButtonX.pressing()) {
-      Pneumatic.set(true);
-    }
+		int rollerSpeed{ controller.get_analog(ANALOG_RIGHT_Y) };
 
-    wait(20, msec); // Sleep the task for a short amount of time to
-                    // prevent wasted resources.
-  }
-}
+		if(abs(rollerSpeed) < 5) {
+			if(rollerStopped) {
+				roller.brake();
+				rollerStopped = false;
+			}
+		} else {
+			rollerStopped = true;
+		}
 
-//
-// Main will set up the competition functions and callbacks.
-//
-int main() {
-  // Set up callbacks for autonomous and driver control periods.
-  Competition.autonomous(autonomous);
-  Competition.drivercontrol(usercontrol);
+		if(rollerStopped) {
+			roller = rollerSpeed;
+		}
 
-  // Run the pre-autonomous function.
-  pre_auton();
+		if(controller.get_digital(DIGITAL_X)) {
+			pneumatic.set_value(true);
+		}
 
-  // Prevent main from exiting with an infinite loop.
-  while(true) {
-    wait(100, msec);
-  }
+		pros::screen::print(TEXT_MEDIUM, 1, "Flywheel temperature limit flag: %i", flywheel.is_over_temp());
+
+		pros::delay(20);
+	}
 }
