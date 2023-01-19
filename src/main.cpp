@@ -1,58 +1,3 @@
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    11, 12, 13, 14, 1
-// Controller1          controller                    
-// Flywheel             motor         16              
-// Intake               motor         18              
-// DiskPusher           motor         17              
-// Roller               motor         19              
-// Pneumatic            digital_out   A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    11, 12, 13, 14, 1
-// Controller1          controller                    
-// Flywheel             motor         16              
-// Intake               motor         18              
-// DiskPusher           motor         17              
-// Roller               motor         8               
-// Pneumatic            digital_out   A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    11, 12, 13, 14, 1
-// Controller1          controller                    
-// Flywheel             motor         16              
-// Intake               motor         6               
-// DiskPusher           motor         17              
-// Roller               motor         8               
-// Pneumatic            digital_out   A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    11, 12, 13, 14, 1
-// Controller1          controller                    
-// Flywheel             motor         16              
-// Intake               motor         6               
-// DiskPusher           motor         7               
-// Roller               motor         8               
-// Pneumatic            digital_out   A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    11, 12, 13, 14, 1
-// Controller1          controller                    
-// Flywheel             motor         5               
-// Intake               motor         6               
-// DiskPusher           motor         7               
-// Roller               motor         8               
-// Pneumatic            digital_out   A               
-// ---- END VEXCODE CONFIGURED DEVICES ----
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
@@ -65,12 +10,12 @@
 // ---- START VEXCODE CONFIGURED DEVICES ----
 // Robot Configuration:
 // [Name]               [Type]        [Port(s)]
-// Drivetrain           drivetrain    1, 2, 3, 4, 9   
+// Drivetrain           drivetrain    11, 12, 13, 14, 1
 // Controller1          controller                    
-// Flywheel             motor         5               
-// Intake               motor         6               
-// DiskPusher           motor         7               
-// Roller               motor         8               
+// Flywheel             motor         16              
+// Intake               motor         18              
+// DiskPusher           motor         17              
+// Roller               motor         19              
 // Pneumatic            digital_out   A               
 // ---- END VEXCODE CONFIGURED DEVICES ----
 
