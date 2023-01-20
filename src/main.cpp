@@ -23,8 +23,6 @@ bool auton3{ false };
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	competition_initialize();
-	autonomous();
 	inertial.reset();
 	inertial.set_heading(0);
 }
