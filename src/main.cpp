@@ -74,7 +74,6 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-
 	if(auton1) {
 		pros::screen::print(TEXT_MEDIUM, 1, "auton1");
 	} else if(auton2) {
