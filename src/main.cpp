@@ -44,6 +44,7 @@ void disabled() {}
  * starts.
  */
 void competition_initialize() {
+	/*
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Auton 1");
 	pros::lcd::set_text(2, "Auton 2");
@@ -60,6 +61,7 @@ void competition_initialize() {
 	}
 	
 	pros::lcd::shutdown();
+	*/
 }
 
 /**
@@ -74,6 +76,7 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+	/*
 	if(auton1) {
 		pros::screen::print(TEXT_MEDIUM, 1, "auton1");
 	} else if(auton2) {
@@ -81,6 +84,7 @@ void autonomous() {
 	} else if(auton3) {
 		pros::screen::print(TEXT_MEDIUM, 1, "auton3");
 	}
+	*/
 }
 
 /**
