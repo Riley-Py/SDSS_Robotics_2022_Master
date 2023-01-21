@@ -175,7 +175,7 @@ void opcontrol() {
 		}
 
 		//pros::screen::print(TEXT_MEDIUM, 1, "Flywheel temperature limit flag: %i", flywheel.is_over_temp());
-		controller.print(1, 1, "Flywheel temperature limit flag: %i", flywheel.is_over_temp());
+		controller.print(1, 1, "%i", flywheel.is_over_temp());
 
 		pros::delay(20);
 	}
