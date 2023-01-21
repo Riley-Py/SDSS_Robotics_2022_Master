@@ -166,10 +166,10 @@ void opcontrol() {
 		}
 
 		if(controller.get_digital(DIGITAL_R1)) {
-			diskPusher.move_voltage(2000);
+			diskPusher.move_voltage(8000);
 			diskPusherStopped = false;
 		} else if(controller.get_digital(DIGITAL_B)) {
-			diskPusher.move_voltage(-2500);
+			diskPusher.move_voltage(-8000);
 			diskPusherStopped = false;
 		} else if(!diskPusherStopped) {
 			diskPusher.brake();
