@@ -194,9 +194,6 @@ void opcontrol() {
 		if(controller.get_digital(DIGITAL_X)) {
 			pneumatic.set_value(true);
 		}
-		if(controller.get_digital(DIGITAL_A)) {
-			pneumatic.set_value(true);
-		}
 
 		controller.print(1, 1, "%i", flywheel.is_over_temp());
 
