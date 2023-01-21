@@ -106,16 +106,16 @@ void opcontrol() {
 		int rightWheelsSpeed{ controller.get_analog(ANALOG_LEFT_Y) - controller.get_analog(ANALOG_LEFT_X) };
 
 		if(abs(leftWheelsSpeed) < 5 && abs(rightWheelsSpeed) < 5) {
-			if(drivetrainStopped) {
+			if(!drivetrainStopped) {
 				leftWheels.brake();
 				rightWheels.brake();
-				drivetrainStopped = false;
+				drivetrainStopped = true;
 			}
 		} else {
-			drivetrainStopped = true;
+			drivetrainStopped = false;
 		}
 
-		if(drivetrainStopped) {
+		if(!drivetrainStopped) {
 			leftWheels = leftWheelsSpeed;
 			rightWheels = rightWheelsSpeed;
 		}
