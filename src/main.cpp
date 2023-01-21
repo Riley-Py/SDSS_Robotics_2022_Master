@@ -156,15 +156,15 @@ void opcontrol() {
 		int rollerSpeed{ controller.get_analog(ANALOG_RIGHT_Y) };
 
 		if(abs(rollerSpeed) < 5) {
-			if(rollerStopped) {
+			if(!rollerStopped) {
 				roller.brake();
-				rollerStopped = false;
+				rollerStopped = true;
 			}
 		} else {
-			rollerStopped = true;
+			rollerStopped = false;
 		}
 
-		if(rollerStopped) {
+		if(!rollerStopped) {
 			roller = rollerSpeed;
 		}
 
