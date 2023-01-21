@@ -85,6 +85,21 @@ void autonomous() {
 		pros::screen::print(TEXT_MEDIUM, 1, "auton3");
 	}
 	*/
+	/*
+	roller.move_voltage(12000);
+	leftWheels.move_voltage(3500);
+	rightWheels.move_voltage(3500);
+	//moves chassis backwards into the roller, provides compression 
+	//runs roller motor by voltage, 12volts for 1 second 
+
+	pros::delay(1000);
+
+	roller.move_voltage(0);
+	leftWheels.move_voltage(0);
+	rightWheels.move_voltage(0);
+	pros::delay(1000);
+	//stops everything 
+	*/
 }
 
 /**
