@@ -118,8 +118,8 @@ void opcontrol() {
 		}
 
 		if(!drivetrainStopped) {
-			leftWheels = leftWheelsSpeed;
-			rightWheels = rightWheelsSpeed;
+			leftWheels.move(leftWheelsSpeed);
+			rightWheels.move(rightWheelsSpeed);
 		}
 
 		if(controller.get_digital(DIGITAL_L1)) {
@@ -167,7 +167,7 @@ void opcontrol() {
 		}
 
 		if(!rollerStopped) {
-			roller = rollerSpeed;
+			roller.move(rollerSpeed);
 		}
 
 		if(controller.get_digital(DIGITAL_X)) {
