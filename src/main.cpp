@@ -49,12 +49,14 @@ void competition_initialize() {
 	pros::lcd::set_text(2, "Auton 2");
 	pros::lcd::set_text(3, "Auton 3");
 
-	if(pros::lcd::read_buttons() == 1) {
-		auton1 = true;
-	}  else if(pros::lcd::read_buttons() == 4) {
-		auton2 = true;
-	} else if(pros::lcd::read_buttons() == 8) {
-		auton3 = true;
+	while(!pros::lcd::read_buttons()) {
+		if(pros::lcd::read_buttons() == 1) {
+			auton1 = true;
+		}  else if(pros::lcd::read_buttons() == 4) {
+			auton2 = true;
+		} else if(pros::lcd::read_buttons() == 8) {
+			auton3 = true;
+		}
 	}
 	
 	pros::lcd::shutdown();
