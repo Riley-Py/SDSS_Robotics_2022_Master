@@ -123,10 +123,10 @@ void opcontrol() {
 		}
 
 		if(controller.get_digital(DIGITAL_L1)) {
-			intake = 127;
+			intake.move_voltage(12000);
 			intakeStopped = false;
 		} else if(controller.get_digital(DIGITAL_L2)) {
-			intake = -127;
+			intake.move_voltage(-12000);
 			intakeStopped = false;
 		} else if(!intakeStopped) {
 			intake.brake();
@@ -134,10 +134,10 @@ void opcontrol() {
 		}
 
 		if(controller.get_digital(DIGITAL_R2)) {
-			flywheel = 127;
+			flywheel.move_voltage(12000);
 			flywheelStopped = false;
 		} else if(controller.get_digital(DIGITAL_Y)) {
-			flywheel = -127;
+			flywheel.move_voltage(-12000);
 			flywheelStopped = false;
 		} else if(!flywheelStopped) {
 			flywheel.brake();
@@ -145,10 +145,10 @@ void opcontrol() {
 		}
 
 		if(controller.get_digital(DIGITAL_R1)) {
-			diskPusher = 95;
+			diskPusher.move_voltage(2000);
 			diskPusherStopped = false;
 		} else if(controller.get_digital(DIGITAL_B)) {
-			diskPusher = -95;
+			diskPusher.move_voltage(-2500);
 			diskPusherStopped = false;
 		} else if(!diskPusherStopped) {
 			diskPusher.brake();
@@ -174,7 +174,6 @@ void opcontrol() {
 			pneumatic.set_value(true);
 		}
 
-		//pros::screen::print(TEXT_MEDIUM, 1, "Flywheel temperature limit flag: %i", flywheel.is_over_temp());
 		controller.print(1, 1, "%i", flywheel.is_over_temp());
 
 		pros::delay(20);
