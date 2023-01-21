@@ -194,7 +194,7 @@ void opcontrol() {
 		if(controller.get_digital(DIGITAL_X)) {
 			pneumatic.set_value(true);
 		}
-		if (controller.get_digital(DIGITAL_A)) {
+		if(controller.get_digital(DIGITAL_A)) {
 			pneumatic.set_value(true);
 		}
 
