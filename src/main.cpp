@@ -116,6 +116,7 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+  //Let's test without the booleans when we get back as this makes the code less readable and more obtuse
 	bool drivetrainStopped{ true };
 	bool intakeStopped{ true };
 	bool diskPusherStopped{ true };
