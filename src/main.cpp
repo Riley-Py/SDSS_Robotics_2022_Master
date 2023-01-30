@@ -12,9 +12,7 @@ pros::Motor roller(19, MOTOR_GEAR_RED);
 pros::Imu inertial(1);
 pros::ADIDigitalOut pneumatic('A');
 
-bool auton1{ false };
-bool auton2{ false };
-bool auton3{ false };
+int auton{ 0 };
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -44,24 +42,20 @@ void disabled() {}
  * starts.
  */
 void competition_initialize() {
-	/*
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "Auton 1");
 	pros::lcd::set_text(2, "Auton 2");
 	pros::lcd::set_text(3, "Auton 3");
 
-	while(!pros::lcd::read_buttons()) {
-		if(pros::lcd::read_buttons() == 1) {
-			auton1 = true;
-		}  else if(pros::lcd::read_buttons() == 4) {
-			auton2 = true;
-		} else if(pros::lcd::read_buttons() == 8) {
-			auton3 = true;
+	while(true) {
+		auton = pros::lcd::read_buttons();
+		if(auton != 0) {
+			break;
 		}
+		pros::delay(20);
 	}
-	
+
 	pros::lcd::shutdown();
-	*/
 }
 
 /**
@@ -76,15 +70,15 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	/*
-	if(auton1) {
+	if(auton == 1) {
 		pros::screen::print(TEXT_MEDIUM, 1, "auton1");
-	} else if(auton2) {
+	} 
+	if(auton == 2) {
 		pros::screen::print(TEXT_MEDIUM, 1, "auton2");
-	} else if(auton3) {
+	} 
+	if(auton == 4) {
 		pros::screen::print(TEXT_MEDIUM, 1, "auton3");
 	}
-	*/
 	/*
 	roller.move_voltage(12000);
 	leftWheels.move_voltage(3500);
