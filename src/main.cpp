@@ -150,7 +150,7 @@ void opcontrol() {
 		if(controller.get_digital(DIGITAL_R2)) {
 			flywheel.move_voltage(12000);
 			flywheelStopped = false;
-		} else if(controller.get_digital(DIGITAL_Y)) {
+		} else if(controller.get_digital(DIGITAL_R1)) {
 			flywheel.move_voltage(-12000);
 			flywheelStopped = false;
 		} else if(!flywheelStopped) {
