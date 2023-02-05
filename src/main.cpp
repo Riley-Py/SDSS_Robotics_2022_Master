@@ -1,15 +1,30 @@
 #include "main.h"
 
-pros::Controller controller(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup leftWheels({11, 12});
-pros::Motor rightFrontWheel(13, true);
-pros::Motor rightBackWheel(14, true);
-pros::MotorGroup rightWheels({rightFrontWheel, rightBackWheel});
-pros::Motor flywheel(16, MOTOR_GEAR_BLUE);
-pros::Motor intake(18);
-pros::Motor diskPusher(17, true);
+Controller controller;
+
+std::shared_ptr<ChassisController> drivetrain =
+	ChassisControllerBuilder()
+		.withMotors({11, 12}, {-13, -14})
+		.withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
+		.build();
+
+ControllerButton flywheelForwardButton(ControllerDigital::R2);
+ControllerButton flywheelBackwardButton(ControllerDigital::R1);
+Motor flywheel(16, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+
+ControllerButton intakeForwardButton(ControllerDigital::L1);
+ControllerButton intakeBackwardButton(ControllerDigital::L2);
+Motor intake(18);
+
+ControllerButton diskPusherForwardButton(ControllerDigital::R1);
+ControllerButton diskPusherBackwardButton(ControllerDigital::B);
+Motor diskPusher(-17);
+
+IMU inertial(1);
+
 pros::Motor roller(19, MOTOR_GEAR_RED);
-pros::Imu inertial(1);
+
+ControllerButton pneumaticButton(ControllerDigital::X);
 pros::ADIDigitalOut pneumatic('A');
 
 int auton{ 0 };
@@ -22,7 +37,6 @@ int auton{ 0 };
  */
 void initialize() {
 	inertial.reset();
-	inertial.set_heading(0);
 }
 
 /**
@@ -110,85 +124,46 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-  //Let's test without the booleans when we get back as this makes the code less readable and more obtuse
-	bool drivetrainStopped{ true };
-	bool intakeStopped{ true };
-	bool diskPusherStopped{ true };
-	bool flywheelStopped{ true };
-	bool rollerStopped{ true };
-
 	while(true) {
-		int leftWheelsSpeed{ controller.get_analog(ANALOG_LEFT_Y) + controller.get_analog(ANALOG_LEFT_X) };
-		int rightWheelsSpeed{ controller.get_analog(ANALOG_LEFT_Y) - controller.get_analog(ANALOG_LEFT_X) };
+		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 5);
 
-		if(abs(leftWheelsSpeed) < 5 && abs(rightWheelsSpeed) < 5) {
-			if(!drivetrainStopped) {
-				leftWheels.brake();
-				rightWheels.brake();
-				drivetrainStopped = true;
-			}
+		if(flywheelForwardButton.isPressed()) {
+			flywheel.moveVoltage(12000);
+		} else if(flywheelBackwardButton.isPressed()) {
+			flywheel.moveVoltage(-12000);
 		} else {
-			drivetrainStopped = false;
+			flywheel.moveVoltage(0);
 		}
 
-		if(!drivetrainStopped) {
-			leftWheels.move(leftWheelsSpeed);
-			rightWheels.move(rightWheelsSpeed);
+		if(intakeForwardButton.isPressed()) {
+			intake.moveVoltage(12000);
+		} else if(intakeBackwardButton.isPressed()) {
+			intake.moveVoltage(-12000);
+		} else {
+			intake.moveVoltage(0);
 		}
 
-		if(controller.get_digital(DIGITAL_L1)) {
-			intake.move_voltage(12000);
-			intakeStopped = false;
-		} else if(controller.get_digital(DIGITAL_L2)) {
-			intake.move_voltage(-12000);
-			intakeStopped = false;
-		} else if(!intakeStopped) {
-			intake.brake();
-			intakeStopped = true;
+		if(diskPusherForwardButton.isPressed()) {
+			diskPusher.moveVoltage(8000);
+		} else if(diskPusherBackwardButton.isPressed()) {
+			diskPusher.moveVoltage(-8000);
+		} else {
+			diskPusher.moveVoltage(0);
 		}
 
-		if(controller.get_digital(DIGITAL_R2)) {
-			flywheel.move_voltage(12000);
-			flywheelStopped = false;
-		} else if(controller.get_digital(DIGITAL_R1)) {
-			flywheel.move_voltage(-12000);
-			flywheelStopped = false;
-		} else if(!flywheelStopped) {
-			flywheel.brake();
-			flywheelStopped = true;
-		}
-
-		if(controller.get_digital(DIGITAL_R1)) {
-			diskPusher.move_voltage(8000);
-			diskPusherStopped = false;
-		} else if(controller.get_digital(DIGITAL_B)) {
-			diskPusher.move_voltage(-8000);
-			diskPusherStopped = false;
-		} else if(!diskPusherStopped) {
-			diskPusher.brake();
-			diskPusherStopped = true;
-		}
-
-		int rollerSpeed{ controller.get_analog(ANALOG_RIGHT_Y) };
+		int rollerSpeed{ controller.getAnalog(ControllerAnalog::rightY) };
 
 		if(abs(rollerSpeed) < 5) {
-			if(!rollerStopped) {
-				roller.brake();
-				rollerStopped = true;
-			}
+			roller.brake();
 		} else {
-			rollerStopped = false;
-		}
-
-		if(!rollerStopped) {
 			roller.move(rollerSpeed);
 		}
 
-		if(controller.get_digital(DIGITAL_X)) {
+		if(pneumaticButton.isPressed()) {
 			pneumatic.set_value(true);
 		}
 
-		controller.print(1, 1, "%i", flywheel.is_over_temp());
+		controller.setText(1, 1, std::to_string(flywheel.isOverTemp()));
 
 		pros::delay(20);
 	}
