@@ -5,12 +5,12 @@ Controller controller;
 std::shared_ptr<ChassisController> drivetrain =
 	ChassisControllerBuilder()
 		.withMotors({11, 12}, {-13, -14})
-		.withDimensions(AbstractMotor::gearset::green, {{4_in, 11.5_in}, imev5GreenTPR})
+		.withDimensions(AbstractMotor::gearset::green, {{4_in, 15_in}, imev5GreenTPR})
 		.build();
 
 ControllerButton flywheelForwardButton(ControllerDigital::R2);
-ControllerButton flywheelBackwardButton(ControllerDigital::R1);
-Motor flywheel(16, false, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+ControllerButton flywheelBackwardButton(ControllerDigital::Y);
+Motor flywheel(16, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
 ControllerButton intakeForwardButton(ControllerDigital::L1);
 ControllerButton intakeBackwardButton(ControllerDigital::L2);
@@ -27,7 +27,14 @@ pros::Motor roller(19, MOTOR_GEAR_RED);
 ControllerButton pneumaticButton(ControllerDigital::X);
 pros::ADIDigitalOut pneumatic('A');
 
+ControllerButton upButton(ControllerDigital::up);
+ControllerButton downButton(ControllerDigital::down);
+
 int auton{ 0 };
+
+constexpr int flywheelSpeed3{ 10000 };
+constexpr int flywheelSpeed2{ 9000 };
+constexpr int flywheelSpeed1{ 8000 };
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -124,13 +131,20 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	int flywheelSetting{ 1 };
+	int flywheelSpeed{ 6000 };
+
+	int timeSinceLastPressed{ pros::millis() };
+
+	Timer timer();
+
 	while(true) {
-		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 5);
+		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX));
 
 		if(flywheelForwardButton.isPressed()) {
-			flywheel.moveVoltage(12000);
+			flywheel.moveVoltage(flywheelSpeed);
 		} else if(flywheelBackwardButton.isPressed()) {
-			flywheel.moveVoltage(-12000);
+			flywheel.moveVoltage(flywheelSpeed);
 		} else {
 			flywheel.moveVoltage(0);
 		}
@@ -163,7 +177,31 @@ void opcontrol() {
 			pneumatic.set_value(true);
 		}
 
-		controller.setText(1, 1, std::to_string(flywheel.isOverTemp()));
+		if(upButton.isPressed() && pros::millis() - timeSinceLastPressed > 100) {
+			flywheelSetting++;
+			timeSinceLastPressed = pros::millis();
+		} else if(downButton.isPressed() && pros::millis() - timeSinceLastPressed > 100) {
+			flywheelSetting--;
+			timeSinceLastPressed = pros::millis();
+		}
+
+		if(flywheelSetting == 1) {
+			flywheelSpeed = flywheelSpeed1;
+		} else if(flywheelSetting == 2) {
+			flywheelSpeed = flywheelSpeed2;
+		} else if(flywheelSetting == 3) {
+			flywheelSpeed = flywheelSpeed3;
+		} else {
+			if(flywheelSetting > 3) {
+				flywheelSpeed = flywheelSpeed3;
+				flywheelSetting = 3;
+			} else {
+				flywheelSpeed = flywheelSpeed1;
+				flywheelSetting = 1;
+			}
+		}
+
+		controller.setText(1, 1, std::to_string(flywheel.getVoltage()));
 
 		pros::delay(20);
 	}
