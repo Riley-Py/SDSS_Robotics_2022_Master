@@ -117,7 +117,7 @@ void autonomous() {
  */
 void opcontrol() {
 	int flywheelSetting{ 1 };
-	int flywheelSpeed{ 6000 };
+	int flywheelSpeed{ 8000 };
 
 	int timeSinceLastPressed{ pros::millis() };
 
