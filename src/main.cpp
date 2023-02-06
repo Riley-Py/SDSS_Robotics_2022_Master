@@ -116,8 +116,8 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-	int flywheelSetting{ 1 };
-	int flywheelSpeed{ 8000 };
+	int flywheelSetting{ 3 };
+	int flywheelSpeed{ 10000 };
 
 	int timeSinceLastPressed{ pros::millis() };
 
