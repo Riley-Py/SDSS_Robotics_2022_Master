@@ -22,8 +22,6 @@ Motor diskPusher(-17);
 
 IMU inertial(1);
 
-Motor roller(19, false, AbstractMotor::gearset::red, AbstractMotor::encoderUnits::degrees);
-
 ControllerButton pneumaticButton(ControllerDigital::X);
 pros::ADIDigitalOut pneumatic('A');
 
@@ -136,13 +134,10 @@ void opcontrol() {
 
 		if(intakeForwardButton.isPressed()) {
 			intake.moveVoltage(12000);
-			roller.moveVoltage(12000);
 		} else if(intakeBackwardButton.isPressed()) {
 			intake.moveVoltage(-12000);
-			roller.moveVoltage(-12000);
 		} else {
 			intake.moveVoltage(0);
-			roller.moveVoltage(0);
 		}
 
 		if(diskPusherForwardButton.isPressed()) {
