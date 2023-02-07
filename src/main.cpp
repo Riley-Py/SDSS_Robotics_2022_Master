@@ -119,8 +119,6 @@ void opcontrol() {
 
 	int timeSinceLastPressed{ pros::millis() };
 
-	Timer timer();
-
 	while(true) {
 		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 0.5);
 
