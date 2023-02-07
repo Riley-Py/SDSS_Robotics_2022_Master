@@ -152,12 +152,14 @@ void opcontrol() {
 			pneumatic.set_value(true);
 		}
 
-		if(upButton.isPressed() && pros::millis() - timeSinceLastPressed > 100) {
-			flywheelSetting++;
-			timeSinceLastPressed = pros::millis();
-		} else if(downButton.isPressed() && pros::millis() - timeSinceLastPressed > 100) {
-			flywheelSetting--;
-			timeSinceLastPressed = pros::millis();
+		if(pros::millis() - timeSinceLastPressed > 100) {
+			if(upButton.isPressed()) {
+				flywheelSetting++;
+				timeSinceLastPressed = pros::millis();
+			} else if(downButton.isPressed()) {
+				flywheelSetting--;
+				timeSinceLastPressed = pros::millis();
+			}
 		}
 
 		if(flywheelSetting == 1) {
