@@ -122,7 +122,7 @@ void opcontrol() {
 	Timer timer();
 
 	while(true) {
-		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX));
+		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 0.5);
 
 		if(flywheelForwardButton.isPressed()) {
 			flywheel.moveVoltage(flywheelSpeed);
