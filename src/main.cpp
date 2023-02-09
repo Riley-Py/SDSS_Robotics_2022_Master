@@ -28,8 +28,6 @@ pros::ADIDigitalOut pneumatic('A');
 ControllerButton upButton(ControllerDigital::up);
 ControllerButton downButton(ControllerDigital::down);
 
-int auton{ 0 };
-
 constexpr int flywheelSpeed3{ 10000 };
 constexpr int flywheelSpeed2{ 9000 };
 constexpr int flywheelSpeed1{ 8000 };
@@ -42,6 +40,7 @@ constexpr int flywheelSpeed1{ 8000 };
  */
 void initialize() {
 	inertial.reset();
+	competition_initialize();
 }
 
 /**
@@ -50,6 +49,8 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {}
+
+int auton{ 0 };
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field
@@ -62,9 +63,8 @@ void disabled() {}
  */
 void competition_initialize() {
 	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Auton 1");
-	pros::lcd::set_text(2, "Auton 2");
-	pros::lcd::set_text(3, "Auton 3");
+	pros::lcd::set_text(1, "In front of roller");
+	pros::lcd::set_text(2, "Other sides");
 
 	while(true) {
 		auton = pros::lcd::read_buttons();
@@ -75,6 +75,8 @@ void competition_initialize() {
 	}
 
 	pros::lcd::shutdown();
+
+	autonomous();
 }
 
 /**
@@ -89,14 +91,14 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	if(auton == 1) {
-		pros::screen::print(TEXT_MEDIUM, 1, "auton1");
-	} 
-	if(auton == 2) {
-		pros::screen::print(TEXT_MEDIUM, 1, "auton2");
-	} 
 	if(auton == 4) {
-		pros::screen::print(TEXT_MEDIUM, 1, "auton3");
+		drivetrain->moveDistance(3_in);
+		intake.moveVoltage(5000);
+		pros::delay(500);
+		intake.moveVoltage(0);
+	}
+	if(auton == 2) {
+		
 	}
 }
 
@@ -120,12 +122,12 @@ void opcontrol() {
 	int timeSinceLastPressed{ pros::millis() };
 
 	while(true) {
-		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 0.5);
+		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 0.3);
 
 		if(flywheelForwardButton.isPressed()) {
 			flywheel.moveVoltage(flywheelSpeed);
 		} else if(flywheelBackwardButton.isPressed()) {
-			flywheel.moveVoltage(flywheelSpeed);
+			flywheel.moveVoltage(-flywheelSpeed);
 		} else {
 			flywheel.moveVoltage(0);
 		}
@@ -176,7 +178,7 @@ void opcontrol() {
 			}
 		}
 
-		controller.setText(1, 1, std::to_string(flywheel.getVoltage()));
+		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())));
 
 		pros::delay(20);
 	}
