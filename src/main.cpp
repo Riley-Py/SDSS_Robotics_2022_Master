@@ -98,7 +98,10 @@ void autonomous() {
 		intake.moveVoltage(0);
 	}
 	if(auton == 2) {
-		
+		drivetrain->getModel()->forward(100);
+		intake.moveVoltage(12000);
+
+		pros::delay(10000);
 	}
 }
 
