@@ -92,16 +92,27 @@ void competition_initialize() {
  */
 void autonomous() {
 	if(auton == 4) {
-		drivetrain->moveDistance(3_in);
+		drivetrain->getModel()->forward(100);
 		intake.moveVoltage(5000);
-		pros::delay(500);
+		pros::delay(400);
 		intake.moveVoltage(0);
+		drivetrain->moveDistance(-10_in);
+		drivetrain->turnAngle(-160_deg);
+		intake.moveVoltage(12000);
+		drivetrain->moveDistance(7_ft);
+		drivetrain->turnAngle(100_deg);
+		flywheel.moveVoltage(11000);
+		pros::delay(2000);
+		diskPusher.moveVoltage(8000);
+		flywheel.moveVoltage(11000);
+		pros::delay(2000);
+		diskPusher.moveVoltage(8000);
+		flywheel.moveVoltage(11000);
+		pros::delay(2000);
+		diskPusher.moveVoltage(8000);
 	}
 	if(auton == 2) {
-		drivetrain->getModel()->forward(100);
-		intake.moveVoltage(12000);
 
-		pros::delay(10000);
 	}
 }
 
