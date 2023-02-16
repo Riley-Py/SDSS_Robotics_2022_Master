@@ -4,23 +4,23 @@ Controller controller;
 
 std::shared_ptr<ChassisController> drivetrain =
 	ChassisControllerBuilder()
-		.withMotors({11, 12}, {-13, -14})
+		.withMotors({1, 2}, {-3, -4})
 		.withDimensions(AbstractMotor::gearset::green, {{4_in, 15_in}, imev5GreenTPR})
 		.build();
 
 ControllerButton flywheelForwardButton(ControllerDigital::R2);
 ControllerButton flywheelBackwardButton(ControllerDigital::Y);
-Motor flywheel(16, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor flywheel(5, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
 ControllerButton intakeForwardButton(ControllerDigital::L1);
 ControllerButton intakeBackwardButton(ControllerDigital::L2);
-Motor intake(18);
+Motor intake(7, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
 
 ControllerButton diskPusherForwardButton(ControllerDigital::R1);
 ControllerButton diskPusherBackwardButton(ControllerDigital::B);
-Motor diskPusher(-17);
+Motor diskPusher(-6);
 
-IMU inertial(1);
+IMU inertial(8);
 
 ControllerButton pneumaticButton(ControllerDigital::X);
 pros::ADIDigitalOut pneumatic('A');
@@ -192,8 +192,13 @@ void opcontrol() {
 			}
 		}
 
-		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())));
+		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())) + " " + std::to_string(static_cast<int>(diskPusher.getPosition())));
 
-		pros::delay(20);
+		pros::delay(500);
+
+		//300-350 positioning for first rotation
+		//
+
+		
 	}
 }
