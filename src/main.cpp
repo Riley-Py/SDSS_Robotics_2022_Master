@@ -14,7 +14,7 @@ Motor flywheel(5, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnit
 
 ControllerButton intakeForwardButton(ControllerDigital::L1);
 ControllerButton intakeBackwardButton(ControllerDigital::L2);
-Motor intake(7, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnits::degrees);
+Motor intake(7);
 
 ControllerButton diskPusherForwardButton(ControllerDigital::R1);
 ControllerButton diskPusherBackwardButton(ControllerDigital::B);
@@ -28,9 +28,9 @@ pros::ADIDigitalOut pneumatic('A');
 ControllerButton upButton(ControllerDigital::up);
 ControllerButton downButton(ControllerDigital::down);
 
-constexpr int flywheelSpeed3{ 10000 };
-constexpr int flywheelSpeed2{ 9000 };
-constexpr int flywheelSpeed1{ 8000 };
+constexpr int flywheelSpeed3{ 9000 };
+constexpr int flywheelSpeed2{ 8000 };
+constexpr int flywheelSpeed1{ 7000 };
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -40,7 +40,8 @@ constexpr int flywheelSpeed1{ 8000 };
  */
 void initialize() {
 	inertial.reset();
-	competition_initialize();
+	diskPusher.setBrakeMode(AbstractMotor::brakeMode::brake);
+	//competition_initialize();
 }
 
 /**
@@ -156,10 +157,14 @@ void opcontrol() {
 
 		if(diskPusherForwardButton.isPressed()) {
 			diskPusher.moveVoltage(8000);
+			if(diskPusher.getPosition() >= 420) {
+				diskPusher.moveVoltage(0);
+			}
 		} else if(diskPusherBackwardButton.isPressed()) {
 			diskPusher.moveVoltage(-8000);
 		} else {
 			diskPusher.moveVoltage(0);
+			diskPusher.tarePosition();
 		}
 
 		if(pneumaticButton.isPressed()) {
@@ -192,13 +197,8 @@ void opcontrol() {
 			}
 		}
 
-		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())) + " " + std::to_string(static_cast<int>(diskPusher.getPosition())));
+		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())));
 
-		pros::delay(500);
-
-		//300-350 positioning for first rotation
-		//
-
-		
+		pros::delay(20);
 	}
 }
