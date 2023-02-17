@@ -5,7 +5,7 @@ Controller controller;
 std::shared_ptr<ChassisController> drivetrain =
 	ChassisControllerBuilder()
 		.withMotors({1, 2}, {-3, -4})
-		.withDimensions(AbstractMotor::gearset::green, {{4_in, 15_in}, imev5GreenTPR})
+		.withDimensions(AbstractMotor::gearset::green, {{3.25_in, 15_in}, imev5GreenTPR})
 		.build();
 
 ControllerButton flywheelForwardButton(ControllerDigital::R2);
@@ -18,12 +18,12 @@ Motor intake(7);
 
 ControllerButton diskPusherForwardButton(ControllerDigital::R1);
 ControllerButton diskPusherBackwardButton(ControllerDigital::B);
-Motor diskPusher(-6);
+Motor diskPusher(-6, false, AbstractMotor::gearset::red, AbstractMotor::encoderUnits::degrees);
 
 IMU inertial(8);
 
 ControllerButton pneumaticButton(ControllerDigital::X);
-pros::ADIDigitalOut pneumatic('A');
+pros::ADIDigitalOut pneumatic('H');
 
 ControllerButton upButton(ControllerDigital::up);
 ControllerButton downButton(ControllerDigital::down);
