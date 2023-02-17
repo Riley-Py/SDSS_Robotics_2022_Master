@@ -132,19 +132,31 @@ void autonomous() {
  */
 void opcontrol() {
 	int flywheelSetting{ 3 };
-	int flywheelSpeed{ 10000 };
+	int flywheelSpeed{ 9000 };
 
-	int timeSinceLastPressed{ pros::millis() };
+	int timeSinceFlywheelSettingLastPressed{ pros::millis() };
+
+	bool flywheelToggle{ false };
+	bool flywheelLatch{ false };
 
 	while(true) {
 		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 0.3);
-
-		if(flywheelForwardButton.isPressed()) {
+		
+		if(flywheelToggle) {
 			flywheel.moveVoltage(flywheelSpeed);
 		} else if(flywheelBackwardButton.isPressed()) {
 			flywheel.moveVoltage(-flywheelSpeed);
 		} else {
 			flywheel.moveVoltage(0);
+		} 
+
+		if(flywheelForwardButton.isPressed()) {
+			if(!flywheelLatch) {
+				flywheelToggle = !flywheelToggle;
+				flywheelLatch = !flywheelLatch;
+			}
+		} else {
+				flywheelLatch = false;
 		}
 
 		if(intakeForwardButton.isPressed()) {
@@ -156,12 +168,12 @@ void opcontrol() {
 		}
 
 		if(diskPusherForwardButton.isPressed()) {
-			diskPusher.moveVoltage(8000);
+			diskPusher.moveVoltage(7000);
 			if(diskPusher.getPosition() >= 420) {
 				diskPusher.moveVoltage(0);
 			}
 		} else if(diskPusherBackwardButton.isPressed()) {
-			diskPusher.moveVoltage(-8000);
+			diskPusher.moveVoltage(-7000);
 		} else {
 			diskPusher.moveVoltage(0);
 			diskPusher.tarePosition();
@@ -171,13 +183,13 @@ void opcontrol() {
 			pneumatic.set_value(true);
 		}
 
-		if(pros::millis() - timeSinceLastPressed > 100) {
+		if(pros::millis() - timeSinceFlywheelSettingLastPressed > 100) {
 			if(upButton.isPressed()) {
 				flywheelSetting++;
-				timeSinceLastPressed = pros::millis();
+				timeSinceFlywheelSettingLastPressed = pros::millis();
 			} else if(downButton.isPressed()) {
 				flywheelSetting--;
-				timeSinceLastPressed = pros::millis();
+				timeSinceFlywheelSettingLastPressed = pros::millis();
 			}
 		}
 
@@ -197,7 +209,7 @@ void opcontrol() {
 			}
 		}
 
-		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())));
+		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())) + "°C");
 
 		pros::delay(20);
 	}
