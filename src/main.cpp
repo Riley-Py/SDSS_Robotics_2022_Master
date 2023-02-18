@@ -19,7 +19,7 @@ Motor intake2(8);
 
 ControllerButton diskPusherForwardButton(ControllerDigital::R1);
 ControllerButton diskPusherBackwardButton(ControllerDigital::B);
-Motor diskPusher(-6, false, AbstractMotor::gearset::red, AbstractMotor::encoderUnits::degrees);
+Motor diskPusher(6, true, AbstractMotor::gearset::red, AbstractMotor::encoderUnits::degrees);
 
 IMU inertial(8);
 
@@ -29,9 +29,9 @@ pros::ADIDigitalOut pneumatic('H');
 ControllerButton upButton(ControllerDigital::up);
 ControllerButton downButton(ControllerDigital::down);
 
-constexpr int flywheelSpeed3{ 9000 };
-constexpr int flywheelSpeed2{ 8000 };
-constexpr int flywheelSpeed1{ 7000 };
+constexpr int flywheelSpeed3{ 12000 };
+constexpr int flywheelSpeed2{ 10000 };
+constexpr int flywheelSpeed1{ 8000 };
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -42,7 +42,7 @@ constexpr int flywheelSpeed1{ 7000 };
 void initialize() {
 	inertial.reset();
 	diskPusher.setBrakeMode(AbstractMotor::brakeMode::brake);
-	//competition_initialize();
+	autonomous();
 }
 
 /**
@@ -64,6 +64,7 @@ int auton{ 0 };
  * starts.
  */
 void competition_initialize() {
+	/*
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "In front of roller");
 	pros::lcd::set_text(2, "Other sides");
@@ -77,8 +78,7 @@ void competition_initialize() {
 	}
 
 	pros::lcd::shutdown();
-
-	autonomous();
+	*/
 }
 
 /**
@@ -93,29 +93,10 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	if(auton == 4) {
-		drivetrain->getModel()->forward(100);
-		intake.moveVoltage(5000);
-		pros::delay(400);
-		intake.moveVoltage(0);
-		drivetrain->moveDistance(-10_in);
-		drivetrain->turnAngle(-160_deg);
-		intake.moveVoltage(12000);
-		drivetrain->moveDistance(7_ft);
-		drivetrain->turnAngle(100_deg);
-		flywheel.moveVoltage(11000);
-		pros::delay(2000);
-		diskPusher.moveVoltage(8000);
-		flywheel.moveVoltage(11000);
-		pros::delay(2000);
-		diskPusher.moveVoltage(8000);
-		flywheel.moveVoltage(11000);
-		pros::delay(2000);
-		diskPusher.moveVoltage(8000);
-	}
-	if(auton == 2) {
-
-	}
+	//drivetrain->getModel()->forward(100);
+	intake.moveVoltage(12000);
+	pros::delay(100);
+	intake.moveVoltage(0);
 }
 
 /**
@@ -133,12 +114,14 @@ void autonomous() {
  */
 void opcontrol() {
 	int flywheelSetting{ 3 };
-	int flywheelSpeed{ 9000 };
+	int flywheelSpeed{ flywheelSpeed3 };
 
 	int timeSinceFlywheelSettingLastPressed{ pros::millis() };
 
 	bool flywheelToggle{ false };
 	bool flywheelLatch{ false };
+
+	std::string flywheelToggleStr{ "Off" };
 
 	while(true) {
 		drivetrain->getModel()->arcade(controller.getAnalog(ControllerAnalog::leftY), controller.getAnalog(ControllerAnalog::leftX), 0.3);
@@ -149,16 +132,32 @@ void opcontrol() {
 			flywheel.moveVoltage(-flywheelSpeed);
 		} else {
 			flywheel.moveVoltage(0);
-		} 
+		}
 
 		if(flywheelForwardButton.isPressed()) {
 			if(!flywheelLatch) {
 				flywheelToggle = !flywheelToggle;
 				flywheelLatch = !flywheelLatch;
+				
+				if(flywheelToggle) {
+					flywheelToggleStr = "On ";
+				} else {
+					flywheelToggleStr = "Off";
+				}
 			}
 		} else {
 			flywheelLatch = false;
 		}
+
+		/*
+		if(flywheelForwardButton.isPressed()) {
+			flywheel.moveVoltage(flywheelSpeed);
+		} else if(flywheelBackwardButton.isPressed()) {
+			flywheel.moveVoltage(-flywheelSpeed);
+		} else {
+			flywheel.moveVoltage(0);
+		}
+		*/
 
 		if(intakeForwardButton.isPressed()) {
 			intake.moveVoltage(12000);
@@ -172,12 +171,12 @@ void opcontrol() {
 		}
 
 		if(diskPusherForwardButton.isPressed()) {
-			diskPusher.moveVoltage(12000);
-			if(diskPusher.getPosition() >= 420) {
+			diskPusher.moveVoltage(9000);
+			if(diskPusher.getPosition() >= 165) {
 				diskPusher.moveVoltage(0);
 			}
 		} else if(diskPusherBackwardButton.isPressed()) {
-			diskPusher.moveVoltage(-12000);
+			diskPusher.moveVoltage(-9000);
 		} else {
 			diskPusher.moveVoltage(0);
 			diskPusher.tarePosition();
@@ -213,7 +212,7 @@ void opcontrol() {
 			}
 		}
 
-		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())) + "°C");
+		controller.setText(1, 1, std::to_string(flywheelSetting) + " " + std::to_string(static_cast<int>(flywheel.getTemperature())) + "°C " + flywheelToggleStr);
 
 		pros::delay(20);
 	}
