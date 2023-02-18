@@ -38,7 +38,7 @@ constexpr int flywheelSpeed1{ 8000 };
  */
 void initialize() {
 	diskPusher.setBrakeMode(AbstractMotor::brakeMode::brake);
-	autonomous();
+	competition_initialize();
 }
 
 /**
@@ -60,7 +60,6 @@ int auton{ 0 };
  * starts.
  */
 void competition_initialize() {
-	/*
 	pros::lcd::initialize();
 	pros::lcd::set_text(1, "In front of roller");
 	pros::lcd::set_text(2, "Other sides");
@@ -74,7 +73,8 @@ void competition_initialize() {
 	}
 
 	pros::lcd::shutdown();
-	*/
+
+	autonomous();
 }
 
 /**
@@ -89,10 +89,31 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	drivetrain->getModel()->forward(100);
-	intake.moveVoltage(-12000);
-	pros::delay(200);
-	intake.moveVoltage(0);
+	if(auton == 4) {
+		drivetrain->getModel()->forward(100);
+		intake.moveVoltage(-12000);
+		pros::delay(300);
+		intake.moveVoltage(0);
+	} else if(auton == 2) {
+		intake.moveVoltage(12000);
+		drivetrain->moveDistance(25_in);
+		drivetrain->turnAngle(-155_deg);
+		drivetrain->moveDistance(-5_in);
+		intake.moveVoltage(0);
+		flywheel.moveVoltage(10000);
+		pros::delay(4000);
+		diskPusher.moveVoltage(9000);
+		pros::delay(800);
+		diskPusher.moveVoltage(0);
+		pros::delay(2000);
+		diskPusher.moveVoltage(9000);
+		pros::delay(1000);
+		diskPusher.moveVoltage(0);
+		pros::delay(3200);
+		diskPusher.moveVoltage(9000);
+		pros::delay(800);
+		diskPusher.moveVoltage(0);
+	}
 }
 
 /**
@@ -176,7 +197,7 @@ void opcontrol() {
 			diskPusher.tarePosition();
 		}
 
-		if(pneumaticButton.isPressed() && pros::millis() - timeFromOpControlStart > 105000) {
+		if(pneumaticButton.isPressed() && pros::millis() - timeFromOpControlStart >= 90000) {
 			pneumatic.set_value(true);
 		}
 
