@@ -20,8 +20,6 @@ ControllerButton diskPusherForwardButton(ControllerDigital::R1);
 ControllerButton diskPusherBackwardButton(ControllerDigital::B);
 Motor diskPusher(6, true, AbstractMotor::gearset::red, AbstractMotor::encoderUnits::degrees);
 
-IMU inertial(8);
-
 ControllerButton pneumaticButton(ControllerDigital::X);
 pros::ADIDigitalOut pneumatic('H');
 
@@ -39,7 +37,6 @@ constexpr int flywheelSpeed1{ 8000 };
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	inertial.reset();
 	diskPusher.setBrakeMode(AbstractMotor::brakeMode::brake);
 	autonomous();
 }
@@ -93,7 +90,7 @@ void competition_initialize() {
  */
 void autonomous() {
 	drivetrain->getModel()->forward(100);
-	intake.moveVoltage(12000);
+	intake.moveVoltage(-12000);
 	pros::delay(200);
 	intake.moveVoltage(0);
 }
@@ -116,6 +113,7 @@ void opcontrol() {
 	int flywheelSpeed{ flywheelSpeed3 };
 
 	int timeSinceFlywheelSettingLastPressed{ pros::millis() };
+	const int timeFromOpControlStart{ pros::millis() };
 
 	bool flywheelToggle{ false };
 	bool flywheelLatch{ false };
@@ -178,7 +176,7 @@ void opcontrol() {
 			diskPusher.tarePosition();
 		}
 
-		if(pneumaticButton.isPressed()) {
+		if(pneumaticButton.isPressed() && pros::millis() - timeFromOpControlStart > 105000) {
 			pneumatic.set_value(true);
 		}
 
