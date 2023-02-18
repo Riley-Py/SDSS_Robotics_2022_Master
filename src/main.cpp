@@ -172,12 +172,12 @@ void opcontrol() {
 		}
 
 		if(diskPusherForwardButton.isPressed()) {
-			diskPusher.moveVoltage(7000);
+			diskPusher.moveVoltage(8000);
 			if(diskPusher.getPosition() >= 420) {
 				diskPusher.moveVoltage(0);
 			}
 		} else if(diskPusherBackwardButton.isPressed()) {
-			diskPusher.moveVoltage(-7000);
+			diskPusher.moveVoltage(-8000);
 		} else {
 			diskPusher.moveVoltage(0);
 			diskPusher.tarePosition();
