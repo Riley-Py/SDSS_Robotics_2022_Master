@@ -165,7 +165,7 @@ void opcontrol() {
 			intake2.moveVoltage(12000);
 		} else if(intakeBackwardButton.isPressed()) {
 			intake.moveVoltage(-12000);
-			intake2.moveVoltage(12000);
+			intake2.moveVoltage(-12000);
 		} else {
 			intake.moveVoltage(0);
 			intake2.moveVoltage(0);
