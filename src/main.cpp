@@ -14,8 +14,7 @@ Motor flywheel(5, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnit
 
 ControllerButton intakeForwardButton(ControllerDigital::L1);
 ControllerButton intakeBackwardButton(ControllerDigital::L2);
-Motor intake(7);
-Motor intake2(8);
+MotorGroup intake({7, -8});
 
 ControllerButton diskPusherForwardButton(ControllerDigital::R1);
 ControllerButton diskPusherBackwardButton(ControllerDigital::B);
@@ -29,8 +28,8 @@ pros::ADIDigitalOut pneumatic('H');
 ControllerButton upButton(ControllerDigital::up);
 ControllerButton downButton(ControllerDigital::down);
 
-constexpr int flywheelSpeed3{ 12000 };
-constexpr int flywheelSpeed2{ 10000 };
+constexpr int flywheelSpeed3{ 11000 };
+constexpr int flywheelSpeed2{ 9000 };
 constexpr int flywheelSpeed1{ 8000 };
 
 /**
@@ -93,9 +92,9 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
-	//drivetrain->getModel()->forward(100);
+	drivetrain->getModel()->forward(100);
 	intake.moveVoltage(12000);
-	pros::delay(100);
+	pros::delay(200);
 	intake.moveVoltage(0);
 }
 
@@ -161,13 +160,10 @@ void opcontrol() {
 
 		if(intakeForwardButton.isPressed()) {
 			intake.moveVoltage(12000);
-			intake2.moveVoltage(12000);
 		} else if(intakeBackwardButton.isPressed()) {
 			intake.moveVoltage(-12000);
-			intake2.moveVoltage(-12000);
 		} else {
 			intake.moveVoltage(0);
-			intake2.moveVoltage(0);
 		}
 
 		if(diskPusherForwardButton.isPressed()) {
