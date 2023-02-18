@@ -38,7 +38,6 @@ constexpr int flywheelSpeed1{ 8000 };
  */
 void initialize() {
 	diskPusher.setBrakeMode(AbstractMotor::brakeMode::brake);
-	competition_initialize();
 }
 
 /**
@@ -73,8 +72,6 @@ void competition_initialize() {
 	}
 
 	pros::lcd::shutdown();
-
-	autonomous();
 }
 
 /**
@@ -130,11 +127,11 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	const int timeFromOpControlStart{ pros::millis() };
+	int timeSinceFlywheelSettingLastPressed{ pros::millis() };
+
 	int flywheelSetting{ 3 };
 	int flywheelSpeed{ flywheelSpeed3 };
-
-	int timeSinceFlywheelSettingLastPressed{ pros::millis() };
-	const int timeFromOpControlStart{ pros::millis() };
 
 	bool flywheelToggle{ false };
 	bool flywheelLatch{ false };
