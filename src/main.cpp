@@ -15,6 +15,7 @@ Motor flywheel(5, true, AbstractMotor::gearset::blue, AbstractMotor::encoderUnit
 ControllerButton intakeForwardButton(ControllerDigital::L1);
 ControllerButton intakeBackwardButton(ControllerDigital::L2);
 Motor intake(7);
+Motor intake2(8);
 
 ControllerButton diskPusherForwardButton(ControllerDigital::R1);
 ControllerButton diskPusherBackwardButton(ControllerDigital::B);
@@ -156,15 +157,18 @@ void opcontrol() {
 				flywheelLatch = !flywheelLatch;
 			}
 		} else {
-				flywheelLatch = false;
+			flywheelLatch = false;
 		}
 
 		if(intakeForwardButton.isPressed()) {
 			intake.moveVoltage(12000);
+			intake2.moveVoltage(12000);
 		} else if(intakeBackwardButton.isPressed()) {
 			intake.moveVoltage(-12000);
+			intake2.moveVoltage(12000);
 		} else {
 			intake.moveVoltage(0);
+			intake2.moveVoltage(0);
 		}
 
 		if(diskPusherForwardButton.isPressed()) {
